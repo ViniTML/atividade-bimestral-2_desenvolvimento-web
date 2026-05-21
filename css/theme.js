@@ -1,0 +1,18 @@
+export const cores = {
+  gradienteTopo: '#B8D4E8',
+  gradienteMeio: '#F5F0E8',
+  gradienteBase: '#F5D0C8',
+  primaria: '#3D5A6C',
+  primariaEscura: '#2C4554',
+  texto: '#2C3E50',
+  textoClaro: '#FFFFFF',
+  card: 'rgba(255, 255, 255, 0.92)',
+  cardBorda: 'rgba(61, 90, 108, 0.15)',
+  entrada: '#FFFFFF',
+  entradaBorda: 'rgba(61, 90, 108, 0.25)',
+  perigo: '#C0392B',
+  sucesso: '#27AE60',
+  tabBar: '#FFFFFF',
+  tabAtivo: '#3D5A6C',
+  tabInativo: '#95A5A6',
+};
