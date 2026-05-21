@@ -19,7 +19,7 @@ export default function Splash({ navigation }) {
         useNativeDriver,
       }),
     ]).start(() => {
-      navigation.replace('TelaLogin');
+      navigation.replace('MenuInicial');
     });
   }, []);
 

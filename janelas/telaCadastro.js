@@ -15,9 +15,10 @@ import { useNativeDriver } from '../utils/platform';
 import { cores } from '../css/theme';
 import * as authApi from '../factory/authApi';
 
-export default function TelaLogin({ navigation }) {
+export default function TelaCadastro({ navigation }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [confirmarSenha, setConfirmarSenha] = useState('');
   const [enviando, setEnviando] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -29,22 +30,36 @@ export default function TelaLogin({ navigation }) {
     }).start();
   }, [fadeAnim]);
 
-  async function Entrar() {
-    if (!email.trim() || !senha) {
-      Alert.alert('Atenção', 'Informe e-mail e senha.');
+  async function Cadastrar() {
+    if (!email.trim() || !senha || !confirmarSenha) {
+      Alert.alert('Atenção', 'Preencha e-mail, senha e confirmação de senha.');
+      return;
+    }
+    if (senha !== confirmarSenha) {
+      Alert.alert('Atenção', 'As senhas não coincidem.');
+      return;
+    }
+    if (senha.length < 6) {
+      Alert.alert('Atenção', 'A senha deve ter pelo menos 6 caracteres.');
       return;
     }
 
     setEnviando(true);
     try {
-      await authApi.login(email, senha);
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Menu' }],
-      });
+      await authApi.cadastrar(email, senha);
+      Alert.alert('Sucesso', 'Conta criada com sucesso!', [
+        {
+          text: 'OK',
+          onPress: () =>
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Menu' }],
+            }),
+        },
+      ]);
     } catch (erro) {
       const codigo = erro?.code || '';
-      Alert.alert('Acesso negado', authApi.mensagemErroAuth(codigo));
+      Alert.alert('Erro', authApi.mensagemErroAuth(codigo));
     } finally {
       setEnviando(false);
     }
@@ -70,7 +85,7 @@ export default function TelaLogin({ navigation }) {
               resizeMode="contain"
             />
           </View>
-          <Text style={mascara.titulo}>Acesso ao Sistema</Text>
+          <Text style={mascara.titulo}>Criar conta</Text>
           <View style={mascara.caixa}>
             <TextInput
               placeholder="Digite seu e-mail"
@@ -84,11 +99,20 @@ export default function TelaLogin({ navigation }) {
             />
             <TextInput
               secureTextEntry
-              placeholder="Digite sua senha"
+              placeholder="Digite sua senha (mín. 6 caracteres)"
               placeholderTextColor="#95A5A6"
               style={mascara.entradas}
               value={senha}
               onChangeText={setSenha}
+              editable={!enviando}
+            />
+            <TextInput
+              secureTextEntry
+              placeholder="Confirme sua senha"
+              placeholderTextColor="#95A5A6"
+              style={mascara.entradas}
+              value={confirmarSenha}
+              onChangeText={setConfirmarSenha}
               editable={!enviando}
             />
             <Pressable
@@ -97,25 +121,19 @@ export default function TelaLogin({ navigation }) {
                 pressed && { opacity: 0.9 },
                 enviando && { opacity: 0.7 },
               ]}
-              onPress={Entrar}
+              onPress={Cadastrar}
               disabled={enviando}>
               {enviando ? (
                 <ActivityIndicator color={cores.textoClaro} />
               ) : (
-                <Text style={mascara.botaoLoginTexto}>Acessar</Text>
+                <Text style={mascara.botaoLoginTexto}>Cadastrar</Text>
               )}
-            </Pressable>
-            <Pressable
-              style={mascara.linkVoltar}
-              onPress={() => navigation.navigate('TelaCadastro')}
-              disabled={enviando}>
-              <Text style={mascara.linkVoltarTexto}>Não tenho conta — Cadastrar</Text>
             </Pressable>
             <Pressable
               style={mascara.linkVoltar}
               onPress={() => navigation.goBack()}
               disabled={enviando}>
-              <Text style={mascara.linkVoltarTexto}>Voltar ao menu inicial</Text>
+              <Text style={mascara.linkVoltarTexto}>Já tenho conta — Entrar</Text>
             </Pressable>
           </View>
         </View>

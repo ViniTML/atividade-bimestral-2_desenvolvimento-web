@@ -86,6 +86,29 @@ const mascara = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
   },
+  botaoSecundario: {
+    backgroundColor: cores.card,
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginTop: 12,
+    borderWidth: 2,
+    borderColor: cores.primaria,
+  },
+  botaoSecundarioTexto: {
+    color: cores.primaria,
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  linkVoltar: {
+    marginTop: 14,
+    alignItems: 'center',
+  },
+  linkVoltarTexto: {
+    color: cores.primariaEscura,
+    fontSize: 14,
+    fontWeight: '600',
+  },
   modoEdicao: {
     textAlign: 'center',
     color: cores.primariaEscura,

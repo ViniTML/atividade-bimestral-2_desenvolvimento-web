@@ -1,15 +1,27 @@
+import { useEffect } from 'react';
+import { View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { auth } from '../factory/firebase';
 import CadCliente from './CadCliente';
 import CadProduto from './CadProduto';
 import CadUser from './CadUser';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { cores } from '../css/theme';
+import BarraSessao from '../components/BarraSessao';
 
 const Tab = createBottomTabNavigator();
 
-export default function Menu() {
+export default function Menu({ navigation }) {
+  useEffect(() => {
+    if (!auth.currentUser) {
+      navigation.replace('MenuInicial');
+    }
+  }, [navigation]);
+
   return (
+    <View style={{ flex: 1 }}>
+      <BarraSessao navigation={navigation} />
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
@@ -55,5 +67,6 @@ export default function Menu() {
         }}
       />
     </Tab.Navigator>
+    </View>
   );
 }
